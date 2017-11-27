@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace ShutdownWatchdog
@@ -22,7 +23,11 @@ namespace ShutdownWatchdog
 
         public void Feed(double units = 1)
         {
-            ShutdownTime += TimeSpan.FromSeconds(foodUnit.TotalSeconds * units);
+            DateTime nextShutdownTime = DateTime.UtcNow + TimeSpan.FromSeconds(foodUnit.TotalSeconds * units);
+            if(nextShutdownTime > ShutdownTime)
+            {
+                ShutdownTime = nextShutdownTime;
+            }
         }
 
         protected override void Run()
@@ -34,6 +39,7 @@ namespace ShutdownWatchdog
                     if(DateTime.UtcNow > ShutdownTime)
                     {
                         ShutdownMachine();
+                        break;
                     }
                     Thread.Sleep(5000);
                 }
@@ -46,7 +52,18 @@ namespace ShutdownWatchdog
 
         void ShutdownMachine()
         {
-
+            Process process = new Process();
+            if(Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                process.StartInfo.FileName = "shutdown";
+                process.StartInfo.Arguments = "-s -t 0";
+            }
+            else if(Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                process.StartInfo.FileName = "shutdown";
+                process.StartInfo.Arguments = "-h now";
+            }
+            process.Start();
         }
     }
 }
