@@ -33,36 +33,59 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Directories.cs" />
-    <Compile Include="HttpFeeder.cs" />
+    <Compile Include="Util\ConfigFile.cs" />
+    <Compile Include="Util\Directories.cs" />
+    <Compile Include="Util\Files.cs" />
+    <Compile Include="IWatch.cs" />
+    <Compile Include="Logging\Logging.cs" />
+    <Compile Include="Feeders\HttpFeeder.cs" />
     <Compile Include="IFeeder.cs" />
-    <Compile Include="JExtensions.cs" />
-    <Compile Include="PluginsLoader.cs" />
+    <Compile Include="Util\Extensions.cs" />
+    <Compile Include="Util\JExtensions.cs" />
+    <Compile Include="Plugins\PluginsLoader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionHelper.cs" />
-    <Compile Include="RestartableThreadClass.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Util\ProcessUtil.cs" />
+    <Compile Include="Util\ReflectionHelper.cs" />
+    <Compile Include="Util\RestartableThreadClass.cs" />
     <Compile Include="SignalReceiver.cs" />
-    <Compile Include="SimpleHttpServer.cs" />
     <Compile Include="Watchdog.cs" />
-    <Compile Include="WatchdogServer.cs" />
+    <Compile Include="FeedersServer.cs" />
+    <Compile Include="WatchesServer.cs" />
+    <Compile Include="Watches\ProcessWatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="watches_server_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="http_feeder_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
-    <None Include="plugins_loader_config.json" />
-    <None Include="watchdog_server_config.json" />
+    <None Include="plugins_loader_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="feeders_server_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" Condition="'$(OS)' != 'Windows_NT'">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Mono\lib\mono\4.6.2-api\Mono.Posix.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

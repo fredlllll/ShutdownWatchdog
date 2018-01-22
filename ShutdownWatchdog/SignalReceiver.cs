@@ -1,6 +1,8 @@
-﻿using System;
+﻿#if __MonoCS__
+using System;
 using Mono.Unix;
 using Mono.Unix.Native;
+using ShutdownWatchdog.Util;
 
 namespace ShutdownWatchdog
 {
@@ -12,13 +14,11 @@ namespace ShutdownWatchdog
 
         public SignalReceiver(Signum[] signums) : base(true)
         {
-#if __MonoCS__
             Signals = new UnixSignal[signums.Length];
             for(int i = 0; i < signums.Length; i++)
             {
                 Signals[i] = new UnixSignal(signums[i]);
             }
-#endif
         }
 
         public event Action<Signum> SignalReceived;
@@ -30,14 +30,13 @@ namespace ShutdownWatchdog
 
         protected override void Run()
         {
-#if __MonoCS__
             while(true)
             {
                 int index = UnixSignal.WaitAny(Signals, -1);
                 var signal = Signals[index];
                 RaiseSignalReceived(signal);
             }
-#endif
         }
     }
 }
+#endif

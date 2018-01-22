@@ -4,14 +4,14 @@ namespace ShutdownWatchdog
 {
     public class FoodArrivedArgs : EventArgs
     {
-        public double Units { get; set; }
+        public double Units { get; set; } = 1;
     }
 
-    public delegate void FoodArrivedHandler(IFeeder sender, FoodArrivedArgs args);
+    public delegate void FeederFoodArrivedHandler(IFeeder sender, FoodArrivedArgs args);
 
     public interface IFeeder
     {
-        event FoodArrivedHandler FoodArrived;
+        event FeederFoodArrivedHandler FoodArrived;
 
         void Attach();
         void Detach();

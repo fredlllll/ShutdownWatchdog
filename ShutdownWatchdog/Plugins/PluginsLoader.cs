@@ -2,14 +2,18 @@
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
+using NLog;
 
-namespace ShutdownWatchdog
+namespace ShutdownWatchdog.Plugins
 {
     public static class PluginsLoader
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static void LoadPlugins()
         {
-            var config = Config.GetConfig<JArray>("plugins_loader");
+            var configFile = ConfigFile.GetClassConfig();
+            JArray config = configFile.Plugins;// Config.Config.GetConfig<JArray>("plugins_loader");
             if(config != null)
             {
                 foreach(JObject jo in config)
@@ -21,6 +25,7 @@ namespace ShutdownWatchdog
                         string file = jo.Get<string>("file");
                         if(!File.Exists(file))
                         {
+                            logger.Warn("Tried to load plugin, but file didnt exist: " + file);
                             continue;
                         }
 

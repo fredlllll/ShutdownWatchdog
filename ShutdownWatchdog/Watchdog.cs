@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using ShutdownWatchdog.Util;
 
 namespace ShutdownWatchdog
 {
@@ -8,11 +10,13 @@ namespace ShutdownWatchdog
     {
         public DateTime ShutdownTime { get; protected set; }
 
+        List<IWatch> watches = new List<IWatch>();
+
         TimeSpan foodUnit;
 
         public Watchdog() : base(false)
         {
-            foodUnit = TimeSpan.FromSeconds(300);//todo: read form settings?
+            foodUnit = TimeSpan.FromSeconds(300);//todo: read from config?
         }
 
         public override void Start()
@@ -53,6 +57,7 @@ namespace ShutdownWatchdog
         void ShutdownMachine()
         {
             Process process = new Process();
+            process.StartInfo.UseShellExecute = true;
             if(Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
                 process.StartInfo.FileName = "shutdown";

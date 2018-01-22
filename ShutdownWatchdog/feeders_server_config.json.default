@@ -1,0 +1,14 @@
+﻿{
+  "feeders": [
+    {
+      "name": "test",
+      "type": "test.test",
+      "load": false
+    },
+    {
+      "name": "http feeder",
+      "type": "ShutdownWatchdog.Feeders.HttpFeeder",
+      "load": true
+    }
+  ]
+}

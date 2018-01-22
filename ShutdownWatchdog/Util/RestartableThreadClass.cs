@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace ShutdownWatchdog
+namespace ShutdownWatchdog.Util
 {
     public abstract class RestartableThreadClass
     {
